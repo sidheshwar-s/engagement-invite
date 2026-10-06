@@ -153,19 +153,22 @@ img {
   animation-delay: calc(var(--i, 0) * 130ms + 150ms);
 }
 
-.eyebrow-ta {
-  margin: 0 0 0.35rem;
-  font-size: 0.95rem;
-  color: var(--gold-light);
-}
-
+/* Bilingual rule: English first, Tamil directly beneath — gold on the dark
+   sections, emerald on ivory (small gold text is too faint on ivory).
+   The parents' lines are the one exception: Tamil grammar puts them above. */
 .eyebrow {
-  margin: 0 0 1.4rem;
+  margin: 0 0 0.4rem;
   font-family: var(--font-serif);
   font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.35em;
   text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.eyebrow-ta {
+  margin: 0 0 1.4rem;
+  font-size: 0.9rem;
   color: var(--gold-light);
 }
 
@@ -249,7 +252,7 @@ img {
 
 /* Short phones (e.g. iPhone SE): tighten gaps so the diyas stay on screen */
 @media (max-height: 700px) {
-  .eyebrow {
+  .eyebrow-ta {
     margin-bottom: 0.8rem;
   }
 
@@ -303,7 +306,8 @@ img {
 .countdown__label-ta {
   font-size: 0.62rem;
   line-height: 1.5;
-  opacity: 0.75;
+  color: var(--gold-light);
+  opacity: 0.9;
 }
 
 .countdown__message {
@@ -662,14 +666,14 @@ main > .section,
   object-fit: cover;
 }
 .lead-ta {
-  margin: 0 0 0.75rem;
+  margin: 0 0 2rem;
   font-size: clamp(1rem, 3.8vw, 1.15rem);
   font-weight: 500;
   color: var(--emerald);
 }
 
 .lead {
-  margin: 0 0 2rem;
+  margin: 0 0 0.6rem;
   font-family: var(--font-serif);
   font-size: clamp(1.2rem, 4.4vw, 1.45rem);
   font-style: italic;
@@ -692,7 +696,7 @@ main > .section,
   margin-top: 0.2rem;
   font-size: 0.45em;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--emerald);
 }
 
 .couple__degree {
@@ -740,6 +744,7 @@ main > .section,
   max-width: 30em;
   font-size: clamp(0.95rem, 3.6vw, 1.05rem);
   line-height: 1.9;
+  color: var(--emerald);
 }
 
 .invite-when {
@@ -783,6 +788,7 @@ main > .section,
 .muted.ta {
   margin-top: 0.4rem;
   font-size: 0.9rem;
+  color: var(--emerald);
 }
 
 /* ============================================================
@@ -858,7 +864,7 @@ main > .section,
 .timeline__title-ta {
   margin: 0.2rem 0 0;
   font-size: 0.95rem;
-  opacity: 0.85;
+  color: var(--gold-light);
 }
 
 .timeline__note {
@@ -889,13 +895,12 @@ main > .section,
 }
 
 /* "·" separator only when the Tamil hall name is present */
-.venue__hall-ta:not([hidden])::before {
-  content: "· ";
-}
-
 .venue__hall-ta {
+  display: block;
+  margin-top: 0.15rem;
   font-size: 0.8em;
   font-weight: 500;
+  color: var(--emerald);
 }
 
 .venue__address {
@@ -908,6 +913,7 @@ main > .section,
   margin-top: 0.4rem;
   font-size: 0.88rem;
   line-height: 1.8;
+  color: var(--emerald);
 }
 
 .venue__map {
@@ -1042,6 +1048,8 @@ main > .section,
   margin-top: 0.3rem;
   font-size: 0.8rem;
   letter-spacing: 0;
+  color: var(--gold-light);
+  opacity: 0.85;
 }
 
 /* ============================================================
