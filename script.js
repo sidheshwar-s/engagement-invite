@@ -17,8 +17,8 @@ const EVENT = {
 
   date: "Sunday, 13 December 2026",
   dateTa: "13 டிசம்பர் 2026, ஞாயிற்றுக்கிழமை",
-  time: "11:00 AM – 1:00 PM",
-  timeTa: "காலை 11:00 – மதியம் 1:00",
+  time: "11:00 AM – 12:00 PM",
+  timeTa: "காலை 11:00 – மதியம் 12:00",
   start: "2026-12-13T11:00:00+05:30", // countdown target, Indian Standard Time
   end: "2026-12-13T13:00:00+05:30",
 
