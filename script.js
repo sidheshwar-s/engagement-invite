@@ -30,7 +30,7 @@ const EVENT = {
   schedule: [        // each item: { time, title, titleTa, note (optional) }
     { time: "11:00 AM", title: "Welcome & Arrival", titleTa: "வரவேற்பு" },
     { time: "11:30 AM", title: "Ring Ceremony", titleTa: "மோதிரம் மாற்றும் விழா" },
-    { time: "12:30 PM", title: "Lunch & Celebration", titleTa: "மதிய விருந்து" },
+    { time: "12:00 PM", title: "Lunch & Celebration", titleTa: "மதிய விருந்து" },
   ],
 };
 
