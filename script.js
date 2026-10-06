@@ -8,6 +8,8 @@ const EVENT = {
   bride: "Oviya B",
   groomTa: "ச. சித்தேஷ்வர்",  // initial from father's name, Saravanan
   brideTa: "பா. ஓவியா",       // initial from father's name, Bala
+  groomDegree: "M.Tech.",      // shown small after the name; "" to hide
+  brideDegree: "M.Tech.",
   // Titles are joined to names with non-breaking spaces so they never split
   // across lines; a "\n" inside a value starts a new line.
   groomParents: "Son of Mr. Saravanan & Mrs. Jothimalar",
@@ -23,6 +25,8 @@ const EVENT = {
   end: "2026-12-13T13:00:00+05:30",
 
   venueName: "Darling Residency",
+  venueHall: "Mana Priya Hall",     // hall inside the venue; "" to hide
+  venueHallTa: "மனப்ரியா அரங்கம்",
   venueAddress: "11/8, Anna Salai, Kosapet, Vellore, Tamil Nadu 632001",
   venueAddressTa: "11/8, அண்ணா சாலை, கொசப்பேட்டை, வேலூர், தமிழ்நாடு 632001",
   mapsName: "", // only needed if Google Maps lists the venue under a different name than venueName
@@ -56,6 +60,8 @@ function fillFields() {
     brideFirst: firstWord(EVENT.bride),
     groomTa: EVENT.groomTa,
     brideTa: EVENT.brideTa,
+    groomDegree: EVENT.groomDegree,
+    brideDegree: EVENT.brideDegree,
     groomParents: EVENT.groomParents,
     groomParentsTa: EVENT.groomParentsTa,
     brideParents: EVENT.brideParents,
@@ -68,6 +74,8 @@ function fillFields() {
     time: EVENT.time,
     timeTa: EVENT.timeTa,
     venueName: EVENT.venueName || FALLBACK.venueName,
+    venueHall: EVENT.venueHall,
+    venueHallTa: EVENT.venueHallTa,
     venueAddress: EVENT.venueAddress,
     venueAddressTa: EVENT.venueAddressTa,
   };

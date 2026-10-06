@@ -667,6 +667,15 @@ main > .section,
   color: var(--ink);
 }
 
+.couple__degree {
+  font-family: var(--font-sans);
+  font-size: 0.36em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  color: var(--gold-dark);
+}
+
 .couple__parents-ta {
   margin: 0 0 0.35rem;
   font-size: 0.85rem;
@@ -839,6 +848,26 @@ main > .section,
   font-size: clamp(1.55rem, 5.5vw, 2rem);
   font-weight: 600;
   color: var(--emerald);
+}
+
+.venue__hall {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-wrap: balance;
+  color: var(--gold-dark);
+}
+
+/* "·" separator only when the Tamil hall name is present */
+.venue__hall-ta:not([hidden])::before {
+  content: "· ";
+}
+
+.venue__hall-ta {
+  font-size: 0.8em;
+  font-weight: 500;
 }
 
 .venue__address {
