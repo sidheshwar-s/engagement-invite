@@ -12,10 +12,10 @@ const EVENT = {
   brideDegree: "M.Tech.",
   // Titles are joined to names with non-breaking spaces so they never split
   // across lines; a "\n" inside a value starts a new line.
-  groomParents: "Son of Mr. Saravanan & Mrs. Jothimalar",
-  groomParentsTa: "திரு. சரவணன் – திருமதி. ஜோதிமலர்\nஅவர்களின் அன்பு மகன்",
-  brideParents: "Daughter of Mr. Balasubramanian & Mrs. Lalithambal",
-  brideParentsTa: "திரு. பாலசுப்ரமணியன் – திருமதி. லலிதாம்பாள்\nஅவர்களின் அன்பு மகள்",
+  groomParents: "Son of Er. Saravanan & Mrs. Jothimalar",
+  groomParentsTa: "பொறி. சரவணன் – திருமதி. ஜோதிமலர்\nஅவர்களின் அன்பு மகன்",
+  brideParents: "Daughter of Dr. Balasubramanian & Mrs. Lalithambal",
+  brideParentsTa: "டாக்டர் பாலசுப்ரமணியன் – திருமதி. லலிதாம்பாள்\nஅவர்களின் அன்பு மகள்",
 
   date: "Sunday, 13 December 2026",
   dateTa: "13 டிசம்பர் 2026, ஞாயிற்றுக்கிழமை",
