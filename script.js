@@ -206,6 +206,165 @@ function startCountdown() {
   if (tick()) timer = setInterval(tick, 1000);
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function svgUse(symbolId, className) {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", className);
+  svg.setAttribute("aria-hidden", "true");
+  const use = document.createElementNS(SVG_NS, "use");
+  use.setAttribute("href", `#${symbolId}`);
+  svg.append(use);
+  return svg;
+}
+
+// `order` sets when the flame lights (see --d in styles.css).
+function createFlame(order, extraClass = "") {
+  const flame = document.createElement("span");
+  flame.className = `flame ${extraClass}`.trim();
+  flame.style.setProperty("--d", order);
+  const glow = document.createElement("span");
+  glow.className = "flame__glow";
+  flame.append(glow, svgUse("flame-shape", "flame__fire"));
+  return flame;
+}
+
+function renderLamps() {
+  // Hero: diyas either side of the scroll cue, lit from the centre outwards.
+  // The outermost pair only shows on wider screens.
+  document.querySelectorAll(".hero__lamp-group").forEach((group) => {
+    const isLeft = group.dataset.side === "left";
+    for (let order = 0; order < 3; order++) {
+      const diya = document.createElement("span");
+      diya.className = order === 2 ? "diya diya--outer" : "diya";
+      diya.append(createFlame(order), svgUse("diya", "diya__bowl"));
+      if (isLeft) group.prepend(diya);
+      else group.append(diya);
+    }
+  });
+
+  // Footer: two kuthuvilakku, wick by wick (front, left tip, right tip).
+  document.querySelectorAll(".kuthu").forEach((lamp, i) => {
+    lamp.append(svgUse("kuthuvilakku", "kuthu__body"));
+    ["center", "left", "right"].forEach((position, j) => {
+      lamp.append(createFlame(i * 3 + j, `flame--${position}`));
+    });
+  });
+}
+
+// Faint embers drifting up from the hero diyas once they are lit.
+function startEmbers() {
+  const canvas = document.querySelector(".hero__embers");
+  if (!canvas || prefersReducedMotion) return;
+
+  const hero = canvas.closest(".hero");
+  const ctx = canvas.getContext("2d");
+  const embers = [];
+  let sources = [];
+  let width = 0;
+  let height = 0;
+  let heroVisible = true;
+  let running = false;
+  let lastTime = 0;
+  let spawnTimer = 0;
+
+  function measure() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const box = canvas.getBoundingClientRect();
+    width = box.width;
+    height = box.height;
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    sources = [...hero.querySelectorAll(".diya .flame")]
+      .filter((flame) => flame.offsetParent !== null) // skip hidden outer diyas
+      .map((flame) => {
+        const r = flame.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - box.left, y: r.top - box.top };
+      });
+  }
+
+  function spawn() {
+    const source = sources[Math.floor(Math.random() * sources.length)];
+    if (!source) return;
+    embers.push({
+      x: source.x + (Math.random() - 0.5) * 6,
+      y: source.y,
+      vx: (Math.random() - 0.5) * 8,
+      vy: -(14 + Math.random() * 20),
+      size: 0.7 + Math.random() * 1.4,
+      life: 0,
+      maxLife: 3.5 + Math.random() * 3.5,
+      phase: Math.random() * Math.PI * 2,
+    });
+  }
+
+  function frame(time) {
+    if (!running) return;
+    const dt = Math.min((time - lastTime) / 1000 || 0, 0.05);
+    lastTime = time;
+
+    spawnTimer += dt;
+    if (spawnTimer > 0.28 && embers.length < 45) {
+      spawnTimer = 0;
+      spawn();
+    }
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "lighter";
+
+    for (let i = embers.length - 1; i >= 0; i--) {
+      const e = embers[i];
+      e.life += dt;
+      if (e.life >= e.maxLife) {
+        embers.splice(i, 1);
+        continue;
+      }
+      e.x += e.vx * dt + Math.sin(e.life * 1.6 + e.phase) * 0.3;
+      e.y += e.vy * dt;
+
+      const alpha = Math.sin(Math.PI * (e.life / e.maxLife)) * 0.85;
+      ctx.fillStyle = `rgba(255, 200, 120, ${alpha * 0.18})`;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size * 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(255, 222, 160, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  // Only animate while the hero is on screen and the tab is visible.
+  function update() {
+    const shouldRun = heroVisible && !document.hidden;
+    if (shouldRun && !running) {
+      running = true;
+      lastTime = performance.now();
+      requestAnimationFrame(frame);
+    } else if (!shouldRun) {
+      running = false;
+    }
+  }
+
+  new IntersectionObserver(([entry]) => {
+    heroVisible = entry.isIntersecting;
+    update();
+  }).observe(hero);
+  document.addEventListener("visibilitychange", update);
+  window.addEventListener("resize", measure);
+
+  // Begin once the diyas have lit (matches the ignite delays in styles.css).
+  setTimeout(() => {
+    measure();
+    update();
+  }, 2600);
+}
+
 function setupReveal() {
   // Children of a reveal group fade in one after another.
   document.querySelectorAll(".reveal-group").forEach((group) => {
@@ -227,7 +386,9 @@ function setupReveal() {
         observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    // Trigger as soon as an element's top passes the lower 12% of the screen.
+    // (A visibility ratio would fire far too late for the tall invitation block.)
+    { threshold: 0, rootMargin: "0px 0px -12% 0px" }
   );
 
   targets.forEach((el) => observer.observe(el));
@@ -237,4 +398,6 @@ fillFields();
 renderSchedule();
 renderVenue();
 startCountdown();
+renderLamps();
 setupReveal();
+startEmbers();

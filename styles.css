@@ -113,16 +113,17 @@ img {
   place-items: center;
   min-height: 100vh;
   min-height: 100svh;
-  padding: 4rem 1.5rem 7rem;
+  padding: clamp(2.5rem, 7svh, 4rem) 1.5rem 8.5rem;
   overflow: hidden;
   text-align: center;
   color: var(--ivory);
   background: radial-gradient(ellipse at center, #12664F 0%, var(--emerald) 45%, var(--emerald-deep) 100%);
 }
 
+/* The bottom inset clears the invitation card that overlaps the hero */
 .hero__frame {
   position: absolute;
-  inset: 14px;
+  inset: 14px 14px 42px;
   border: 1px solid rgba(201, 162, 39, 0.7);
   pointer-events: none;
 }
@@ -178,9 +179,10 @@ img {
   line-height: 1.05;
 }
 
+/* Height-aware too, so the lamps stay on screen on short laptop displays */
 .names__name {
   padding: 0 0.2em;
-  font-size: clamp(3.4rem, 16vw, 6.5rem);
+  font-size: clamp(3.4rem, min(16vw, 10svh), 6.5rem);
 }
 
 .names__amp {
@@ -291,7 +293,7 @@ img {
 
 .scroll-cue {
   position: absolute;
-  bottom: 2.5rem;
+  bottom: 3.4rem;
   left: 50%;
   width: 22px;
   height: 36px;
@@ -312,12 +314,204 @@ img {
 }
 
 /* ============================================================
-   Sections
+   Lamps: hero diyas, footer kuthuvilakku and their flames
    ============================================================ */
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Warm light that rises behind the diyas once they are lit */
+.hero__glow {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 60%;
+  background: radial-gradient(55% 60% at 50% 100%, rgba(255, 176, 80, 0.24), rgba(255, 140, 40, 0.08) 55%, transparent 80%);
+  pointer-events: none;
+}
+
+.js .hero__glow {
+  opacity: 0;
+  animation:
+    glow-in 2.4s ease-out 2s forwards,
+    glow-breathe 5s ease-in-out 4.4s infinite alternate;
+}
+
+.hero__embers {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero__lamps {
+  position: absolute;
+  right: 0;
+  bottom: 3.1rem;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4.25rem; /* room for the scroll cue */
+  pointer-events: none;
+}
+
+.hero__lamp-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+/* Lamp sizes are in em so a font-size change scales the whole lamp */
+.diya {
+  position: relative;
+  display: block;
+  width: 4.6em;
+  height: 2.76em;
+  font-size: 10px;
+}
+
+.diya--outer {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .hero__lamps {
+    gap: 5rem;
+  }
+
+  .diya {
+    font-size: 12px;
+  }
+
+  .diya--outer {
+    display: block;
+  }
+}
+
+.diya__bowl,
+.kuthu__body {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.footer__altar {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.75rem;
+  margin: 0 auto 1.75rem;
+}
+
+.kuthu {
+  position: relative;
+  display: block;
+  width: 4.4em;
+  height: 10.27em;
+  font-size: 11px;
+}
+
+/* Flame anchor points match the wick tips in the #kuthuvilakku drawing */
+.kuthu .flame {
+  width: 0.95em;
+  height: 1.75em;
+}
+
+.flame {
+  position: absolute;
+  bottom: 70%;
+  left: 50%;
+  width: 1.1em;
+  height: 2em;
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+
+.diya .flame {
+  bottom: 68%;
+}
+
+.flame--left {
+  bottom: 78.6%;
+  left: 7.5%;
+}
+
+.flame--right {
+  bottom: 78.6%;
+  left: 92.5%;
+}
+
+.flame--center {
+  bottom: 75.7%;
+}
+
+.flame__fire {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 0 0.3em rgba(255, 170, 60, 0.85));
+  animation: flicker calc(1.1s + var(--d, 0) * 0.17s) ease-in-out infinite alternate;
+}
+
+.flame__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6em;
+  height: 6em;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 196, 110, 0.5) 0%, rgba(255, 150, 60, 0.18) 35%, transparent 68%);
+  mix-blend-mode: screen;
+  animation: glow-pulse calc(1.8s + var(--d, 0) * 0.23s) ease-in-out infinite alternate;
+}
+
+/* Flames light one after another: hero on load, footer when it scrolls in */
+.js .flame {
+  opacity: 0;
+  scale: 0;
+}
+
+.js .hero .flame {
+  animation: ignite 1s var(--ease-out) both;
+  animation-delay: calc(1.7s + var(--d) * 0.45s);
+}
+
+.js .footer.is-visible .flame {
+  animation: ignite 1s var(--ease-out) both;
+  animation-delay: calc(0.5s + var(--d) * 0.3s);
+}
+
+/* ============================================================
+   Sections — each one slides over the previous like a stacked card
+   ============================================================ */
+/* `clip` (unlike `hidden`) doesn't make the section a scroll container,
+   which would stop view() timelines inside it from following the page */
 .section {
   position: relative;
   padding: clamp(4.5rem, 12vw, 7rem) 0;
   overflow: hidden;
+  overflow: clip;
+}
+
+main > .section,
+.footer {
+  position: relative;
+  margin-top: -28px;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -18px 36px -20px rgba(0, 0, 0, 0.4);
 }
 
 .section--ivory {
@@ -427,6 +621,7 @@ img {
 .portrait__frame {
   aspect-ratio: 733 / 1280;
   overflow: hidden;
+  overflow: clip;
   border: 2px solid var(--gold);
   border-radius: 50% 50% 10px 10px / 28.6% 28.6% 10px 10px;
   background: #F3EADA;
@@ -753,7 +948,7 @@ img {
 .footer__kolam {
   display: block;
   width: 72px;
-  margin: 0 auto 1.5rem;
+  margin: 0 0 0.6rem; /* sits between the two kuthuvilakku */
   color: var(--gold);
 }
 
@@ -828,6 +1023,31 @@ img {
   scale: 1 1;
 }
 
+/* Masked lines: text rises up from behind an invisible edge */
+.js .mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.js .mask > span {
+  display: block;
+  translate: 0 110%;
+  transition: translate 1.2s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 120ms + var(--m, 0) * 160ms + 200ms);
+}
+
+.js .is-visible .mask > span {
+  translate: 0 0;
+}
+
+/* Titles use the mask rise instead of the drift-and-blur */
+.js .section-title.reveal {
+  transform: none;
+  filter: none;
+}
+
 /* ============================================================
    Scroll-linked effects (Chrome/Edge 115+, Safari 26+).
    Other browsers simply skip them.
@@ -839,9 +1059,25 @@ img {
     animation-timeline: scroll(root);
   }
 
-  /* Hero gently drifts up and fades as you scroll past it */
+  /* Hero falls back (parallax) and dims as the invitation card slides over it,
+     while its content drifts up and fades */
   .hero {
     view-timeline: --hero block;
+    animation: hero-parallax linear both;
+    animation-timeline: --hero;
+    animation-range: exit 0% exit 100%;
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #011A12;
+    opacity: 0;
+    pointer-events: none;
+    animation: hero-dim linear both;
+    animation-timeline: --hero;
+    animation-range: exit 0% exit 100%;
   }
 
   .hero__content {
@@ -867,11 +1103,34 @@ img {
     animation-range: entry 10% entry 100%;
   }
 
-  /* Portrait settles from a slight zoom as it scrolls into view */
+  /* Schedule cards glide in towards the line (scroll-linked instead of the
+     one-time reveal), and each dot lights up like a lamp as its card
+     passes the middle of the screen */
+  .js .timeline__item.reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  .timeline__item {
+    view-timeline: --step block;
+    animation: step-in linear both;
+    animation-timeline: --step;
+    animation-range: entry 5% entry 85%;
+  }
+
+  .timeline__item::before {
+    animation: dot-light linear both;
+    animation-timeline: --step;
+    animation-range: cover 30% cover 45%;
+  }
+
+  /* Portrait opens like temple doors from the centre and settles from a slight zoom */
   .portrait__frame img {
-    animation: settle linear both;
+    animation: doors-open linear both;
     animation-timeline: view();
-    animation-range: entry 0% cover 50%;
+    animation-range: entry 10% cover 45%;
   }
 
   /* Watermark mandalas turn slowly with the page */
@@ -926,9 +1185,61 @@ img {
   to { scale: 1.15; opacity: 0.08; }
 }
 
-@keyframes settle {
-  from { scale: 1.1; }
-  to { scale: 1; }
+@keyframes doors-open {
+  from { clip-path: inset(0 50% 0 50%); scale: 1.12; }
+  to { clip-path: inset(0 0 0 0); scale: 1; }
+}
+
+@keyframes hero-parallax {
+  to { translate: 0 40%; }
+}
+
+@keyframes hero-dim {
+  to { opacity: 0.55; }
+}
+
+@keyframes step-in {
+  from { opacity: 0; translate: 28px 0; filter: blur(4px); }
+  to { opacity: 1; translate: 0 0; filter: none; }
+}
+
+@keyframes dot-light {
+  from {
+    background: var(--emerald);
+    box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15);
+  }
+  to {
+    background: var(--gold-light);
+    box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.25), 0 0 16px 5px rgba(255, 190, 90, 0.6);
+  }
+}
+
+@keyframes ignite {
+  0% { opacity: 0; scale: 0.2; }
+  40% { opacity: 1; scale: 1.3; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes flicker {
+  0% { transform: scale(1, 1) skewX(0deg); }
+  25% { transform: scale(0.95, 1.05) skewX(1.5deg); }
+  50% { transform: scale(1.03, 0.94) skewX(-1deg); }
+  75% { transform: scale(0.97, 1.07) skewX(1deg); }
+  100% { transform: scale(1.02, 0.97) skewX(-1.5deg); }
+}
+
+@keyframes glow-pulse {
+  from { opacity: 0.85; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes glow-in {
+  to { opacity: 1; }
+}
+
+@keyframes glow-breathe {
+  from { opacity: 1; }
+  to { opacity: 0.75; }
 }
 
 @keyframes turn {
@@ -961,6 +1272,20 @@ img {
   .js .reveal-group .divider::after,
   .js .section-title.reveal::after {
     scale: 1 1;
+  }
+
+  .js .mask > span {
+    translate: 0 0;
+  }
+
+  /* Lamps are simply shown lit */
+  .js .flame {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .js .hero__glow {
+    opacity: 1;
   }
 
   .scroll-progress {

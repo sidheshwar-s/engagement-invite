@@ -29,11 +29,69 @@
 </head>
 <body>
 
+  <!-- Shared drawings for the lamps (used via <use href="#…">) -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="flame-fill" cx="50%" cy="78%" r="70%" fx="50%" fy="88%">
+        <stop offset="0" stop-color="#FFFBEA"/>
+        <stop offset="0.25" stop-color="#FFE9A3"/>
+        <stop offset="0.55" stop-color="#FFB43C"/>
+        <stop offset="0.85" stop-color="#FF7417"/>
+        <stop offset="1" stop-color="#FF5A0A" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="brass" x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stop-color="#6E500C"/>
+        <stop offset="0.35" stop-color="#E9C66A"/>
+        <stop offset="0.55" stop-color="#F7E3A1"/>
+        <stop offset="0.75" stop-color="#C9A227"/>
+        <stop offset="1" stop-color="#6E500C"/>
+      </linearGradient>
+
+      <symbol id="flame-shape" viewBox="0 0 12 22">
+        <path d="M6 0 C8 6 12 10 12 15.5 A6 6 0 0 1 0 15.5 C0 10 4 6 6 0 Z" fill="url(#flame-fill)"/>
+        <ellipse cx="6" cy="17.5" rx="1.8" ry="2.6" fill="#8FC2FF" opacity="0.35"/>
+      </symbol>
+
+      <!-- Agal vilakku (clay/brass diya) -->
+      <symbol id="diya" viewBox="0 0 60 36">
+        <path d="M23 28 L37 28 L39 34 L21 34 Z" fill="url(#brass)"/>
+        <path d="M3 15 C6 31 54 31 57 15 Z" fill="url(#brass)"/>
+        <path d="M6 17 C11 27 49 27 54 17" fill="none" stroke="#FFF3C4" stroke-opacity="0.35"/>
+        <ellipse cx="30" cy="15" rx="27" ry="4.5" fill="#8A6A12"/>
+        <ellipse cx="30" cy="15" rx="23" ry="2.8" fill="#3B2A08"/>
+        <path d="M30 15 L30 10" stroke="#2A1D05" stroke-width="1.6" stroke-linecap="round"/>
+      </symbol>
+
+      <!-- Kuthuvilakku (standing lamp) with wicks at both tips and the front -->
+      <symbol id="kuthuvilakku" viewBox="0 0 60 140">
+        <g fill="url(#brass)">
+          <path d="M30 2 C34 8 34 13 30 16 C26 13 26 8 30 2 Z"/>
+          <ellipse cx="30" cy="17.5" rx="5" ry="1.8"/>
+          <rect x="28.5" y="18" width="3" height="15"/>
+          <ellipse cx="30" cy="25" rx="3.5" ry="1.4"/>
+          <path d="M4 33 C14 44 46 44 56 33 C46 37 14 37 4 33 Z"/>
+          <path d="M22 42 C26 46 34 46 38 42 Z"/>
+          <rect x="27.5" y="44" width="5" height="64"/>
+          <ellipse cx="30" cy="58" rx="6" ry="2.4"/>
+          <ellipse cx="30" cy="80" rx="7" ry="3"/>
+          <ellipse cx="30" cy="100" rx="6" ry="2.4"/>
+          <path d="M27.5 106 C27 116 18 124 12 132 L48 132 C42 124 33 116 32.5 106 Z"/>
+          <ellipse cx="30" cy="133" rx="20" ry="4"/>
+        </g>
+        <ellipse cx="30" cy="136" rx="22" ry="3" fill="#6E500C"/>
+        <path d="M8 34.5 C18 38.5 42 38.5 52 34.5" fill="none" stroke="#3B2A08" stroke-width="1.5"/>
+        <path d="M5 33 L4.5 30 M55 33 L55.5 30 M30 37.5 L30 34.5" stroke="#2A1D05" stroke-width="1.4" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <div class="scroll-progress" aria-hidden="true"></div>
 
   <header class="hero">
     <div class="hero__frame" aria-hidden="true"></div>
     <img class="hero__mandala" src="assets/mandala.svg" alt="" aria-hidden="true">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <canvas class="hero__embers" aria-hidden="true"></canvas>
 
     <div class="hero__content">
       <p class="eyebrow-ta ta" lang="ta" style="--i: 0">நிச்சயதார்த்த விழா</p>
@@ -76,6 +134,12 @@
     </div>
 
     <a class="scroll-cue" href="#invitation" aria-label="Scroll to the invitation"><span></span></a>
+
+    <!-- Diyas are added by script.js -->
+    <div class="hero__lamps" aria-hidden="true">
+      <div class="hero__lamp-group" data-side="left"></div>
+      <div class="hero__lamp-group" data-side="right"></div>
+    </div>
   </header>
 
   <main>
@@ -95,12 +159,12 @@
         </p>
         <p class="couple">
           <span class="couple__parents-ta ta" lang="ta" data-field="groomParentsTa"></span>
-          <span data-field="groom">Sidheshwar S</span>
+          <span class="mask"><span data-field="groom">Sidheshwar S</span></span>
           <span class="couple__ta ta" lang="ta" data-field="groomTa">ச. சித்தேஷ்வர்</span>
           <span class="couple__parents" data-field="groomParents"></span>
           <span class="couple__amp">&amp;</span>
           <span class="couple__parents-ta ta" lang="ta" data-field="brideParentsTa"></span>
-          <span data-field="bride">Oviya B</span>
+          <span class="mask" style="--m: 2"><span data-field="bride">Oviya B</span></span>
           <span class="couple__ta ta" lang="ta" data-field="brideTa">பா. ஓவியா</span>
           <span class="couple__parents" data-field="brideParents"></span>
         </p>
@@ -125,8 +189,8 @@
     <section id="schedule" class="section section--emerald" aria-labelledby="schedule-title">
       <div class="container">
         <h2 id="schedule-title" class="section-title reveal">
-          The Celebration
-          <span class="section-title__ta ta" lang="ta">விழா நிகழ்ச்சிகள்</span>
+          <span class="mask"><span>The Celebration</span></span>
+          <span class="mask section-title__ta ta" lang="ta" style="--m: 1"><span>விழா நிகழ்ச்சிகள்</span></span>
         </h2>
         <ol class="timeline" id="timeline"></ol>
       </div>
@@ -135,8 +199,8 @@
     <section id="venue" class="section section--ivory" aria-labelledby="venue-title">
       <div class="container">
         <h2 id="venue-title" class="section-title reveal">
-          The Venue
-          <span class="section-title__ta ta" lang="ta">விழா நடைபெறும் இடம்</span>
+          <span class="mask"><span>The Venue</span></span>
+          <span class="mask section-title__ta ta" lang="ta" style="--m: 1"><span>விழா நடைபெறும் இடம்</span></span>
         </h2>
         <div class="venue reveal-group">
           <p class="venue__name" data-field="venueName">Venue to be announced</p>
@@ -164,17 +228,22 @@
   </main>
 
   <footer class="footer reveal-group">
-    <svg class="footer__kolam" viewBox="-40 -40 80 80" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
-      <circle cx="10" cy="0" r="14"/>
-      <circle cx="-10" cy="0" r="14"/>
-      <circle cx="0" cy="10" r="14"/>
-      <circle cx="0" cy="-10" r="14"/>
-      <circle r="2.5" fill="currentColor"/>
-      <circle cx="0" cy="-33" r="2" fill="currentColor"/>
-      <circle cx="0" cy="33" r="2" fill="currentColor"/>
-      <circle cx="-33" cy="0" r="2" fill="currentColor"/>
-      <circle cx="33" cy="0" r="2" fill="currentColor"/>
-    </svg>
+    <!-- Kuthuvilakku are filled in by script.js -->
+    <div class="footer__altar" aria-hidden="true">
+      <span class="kuthu"></span>
+      <svg class="footer__kolam" viewBox="-40 -40 80 80" fill="none" stroke="currentColor" stroke-width="1.4">
+        <circle cx="10" cy="0" r="14"/>
+        <circle cx="-10" cy="0" r="14"/>
+        <circle cx="0" cy="10" r="14"/>
+        <circle cx="0" cy="-10" r="14"/>
+        <circle r="2.5" fill="currentColor"/>
+        <circle cx="0" cy="-33" r="2" fill="currentColor"/>
+        <circle cx="0" cy="33" r="2" fill="currentColor"/>
+        <circle cx="-33" cy="0" r="2" fill="currentColor"/>
+        <circle cx="33" cy="0" r="2" fill="currentColor"/>
+      </svg>
+      <span class="kuthu"></span>
+    </div>
     <p class="footer__message">We look forward to celebrating with you</p>
     <p class="footer__message-ta ta" lang="ta">தங்கள் நல்வரவை விரும்பும்</p>
     <p class="footer__monogram shimmer" data-field="monogram">S &hearts; O</p>
