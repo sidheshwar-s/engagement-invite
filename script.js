@@ -151,12 +151,14 @@ function renderVenue() {
 
 function startCountdown() {
   const box = document.getElementById("countdown");
+  const heading = document.getElementById("countdown-heading");
   const message = document.getElementById("countdown-message");
   const start = Date.parse(EVENT.start);
   const end = Date.parse(EVENT.end) || start;
 
   if (Number.isNaN(start)) {
     box.hidden = true;
+    heading.hidden = true;
     return;
   }
 
@@ -177,6 +179,7 @@ function startCountdown() {
     message.dataset.state = state;
     message.hidden = false;
     box.hidden = true;
+    heading.hidden = true;
   }
 
   // Returns false once the event is over and the timer can stop.

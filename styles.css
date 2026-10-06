@@ -227,11 +227,39 @@ img {
 }
 
 /* Countdown */
+.countdown__heading {
+  margin: 1.3rem 0 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.countdown__heading .ta {
+  font-size: 1.05em;
+}
+
 .countdown {
   display: flex;
   justify-content: center;
   gap: 0.6rem;
-  margin: 1.6rem 0 0;
+  margin: 0;
+}
+
+/* Short phones (e.g. iPhone SE): tighten gaps so the diyas stay on screen */
+@media (max-height: 700px) {
+  .eyebrow {
+    margin-bottom: 0.8rem;
+  }
+
+  .hero__tagline {
+    margin: 0.6rem 0 0.7rem;
+  }
+
+  .countdown__heading {
+    margin-top: 0.9rem;
+  }
 }
 
 .countdown[hidden] {
