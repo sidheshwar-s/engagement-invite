@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 -200 400 400" fill="none" stroke="#C9A227" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <!-- Base shapes, drawn pointing straight up from the centre -->
+    <path id="petal-inner" d="M0,-28 C10,-40 10,-52 0,-64 C-10,-52 -10,-40 0,-28 Z"/>
+    <path id="petal-mid" d="M0,-72 C24,-94 24,-120 0,-142 C-24,-120 -24,-94 0,-72 Z"/>
+    <path id="petal-vein" d="M0,-84 L0,-128"/>
+    <path id="petal-small" d="M0,-74 C13,-88 13,-106 0,-120 C-13,-106 -13,-88 0,-74 Z"/>
+    <path id="leaf" d="M0,-150 C9,-157 9,-166 0,-174 C-9,-166 -9,-157 0,-150 Z"/>
+    <circle id="dot" cx="0" cy="-162" r="2"/>
+    <circle id="bead" cx="0" cy="-185" r="2.6"/>
+
+    <!-- 12-fold inner ring -->
+    <g id="i3">
+      <use href="#petal-inner"/>
+      <use href="#petal-inner" transform="rotate(120)"/>
+      <use href="#petal-inner" transform="rotate(240)"/>
+    </g>
+    <g id="i12">
+      <use href="#i3"/>
+      <use href="#i3" transform="rotate(30)"/>
+      <use href="#i3" transform="rotate(60)"/>
+      <use href="#i3" transform="rotate(90)"/>
+    </g>
+
+    <!-- 16-fold middle and outer rings -->
+    <g id="m1">
+      <use href="#petal-mid"/>
+      <use href="#petal-vein"/>
+      <use href="#petal-small" transform="rotate(11.25)"/>
+      <use href="#leaf"/>
+      <use href="#dot" transform="rotate(11.25)"/>
+    </g>
+    <g id="m2">
+      <use href="#m1"/>
+      <use href="#m1" transform="rotate(22.5)"/>
+    </g>
+    <g id="m4">
+      <use href="#m2"/>
+      <use href="#m2" transform="rotate(45)"/>
+    </g>
+    <g id="m8">
+      <use href="#m4"/>
+      <use href="#m4" transform="rotate(90)"/>
+    </g>
+
+    <!-- 36 beads -->
+    <g id="b4">
+      <use href="#bead"/>
+      <use href="#bead" transform="rotate(90)"/>
+      <use href="#bead" transform="rotate(180)"/>
+      <use href="#bead" transform="rotate(270)"/>
+    </g>
+  </defs>
+
+  <circle r="6" fill="#C9A227"/>
+  <circle r="16"/>
+  <circle r="22" stroke-dasharray="2 5"/>
+  <use href="#i12"/>
+  <circle r="68"/>
+  <use href="#m8"/>
+  <use href="#m8" transform="rotate(180)"/>
+  <circle r="146"/>
+  <circle r="178"/>
+  <use href="#b4"/>
+  <use href="#b4" transform="rotate(10)"/>
+  <use href="#b4" transform="rotate(20)"/>
+  <use href="#b4" transform="rotate(30)"/>
+  <use href="#b4" transform="rotate(40)"/>
+  <use href="#b4" transform="rotate(50)"/>
+  <use href="#b4" transform="rotate(60)"/>
+  <use href="#b4" transform="rotate(70)"/>
+  <use href="#b4" transform="rotate(80)"/>
+  <circle r="194" stroke-dasharray="2 6"/>
+</svg>
