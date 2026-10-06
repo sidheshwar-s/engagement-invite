@@ -844,6 +844,7 @@ main > .section,
 .venue__address {
   margin: 0;
   font-size: 0.95rem;
+  text-wrap: balance;
 }
 
 .venue__address.ta {

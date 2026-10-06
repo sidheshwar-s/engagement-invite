@@ -22,10 +22,10 @@ const EVENT = {
   start: "2026-12-13T11:00:00+05:30", // countdown target, Indian Standard Time
   end: "2026-12-13T13:00:00+05:30",
 
-  venueName: "Darling Banquet Hall",
-  venueAddress: "11/8, Anna Salai, Bishop David Nagar, Kosapet, Vellore, Tamil Nadu 632001",
-  venueAddressTa: "11/8, அண்ணா சாலை, பிஷப் டேவிட் நகர், கொசப்பேட்டை, வேலூர், தமிழ்நாடு 632001",
-  mapsName: "Darling Mahal", // the name Google Maps lists the venue under; used for the map + directions
+  venueName: "Darling Residency",
+  venueAddress: "11/8, Anna Salai, Kosapet, Vellore, Tamil Nadu 632001",
+  venueAddressTa: "11/8, அண்ணா சாலை, கொசப்பேட்டை, வேலூர், தமிழ்நாடு 632001",
+  mapsName: "", // only needed if Google Maps lists the venue under a different name than venueName
 
   schedule: [        // each item: { time, title, titleTa, note (optional) }
     { time: "11:00 AM", title: "Welcome & Arrival", titleTa: "வரவேற்பு" },
