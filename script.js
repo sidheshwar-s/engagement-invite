@@ -14,8 +14,8 @@ const EVENT = {
   // across lines; a "\n" inside a value starts a new line.
   groomParents: "Son of Er. Saravanan & Mrs. Jothimalar",
   groomParentsTa: "பொறி. சரவணன் – திருமதி. ஜோதிமலர்\nஅவர்களின் அன்பு மகன்",
-  brideParents: "Daughter of Dr. Balasubramanian & Mrs. Lalithambal",
-  brideParentsTa: "டாக்டர் பாலசுப்ரமணியன் – திருமதி. லலிதாம்பாள்\nஅவர்களின் அன்பு மகள்",
+  brideParents: "Daughter of Dr. Balasubramanian & Mrs. Lalithambal, B.Com.",
+  brideParentsTa: "டாக்டர் பாலசுப்ரமணியன் – திருமதி. லலிதாம்பாள், பி.காம்.\nஅவர்களின் அன்பு மகள்",
 
   date: "Sunday, 13 December 2026",
   dateTa: "13 டிசம்பர் 2026, ஞாயிற்றுக்கிழமை",
@@ -27,6 +27,7 @@ const EVENT = {
   venueName: "Darling Residency",
   venueHall: "Mana Priya Hall",     // hall inside the venue; "" to hide
   venueHallTa: "மனப்ரியா அரங்கம்",
+  venueCity: "Vellore",             // shown with the venue on the opening screen
   venueAddress: "11/8, Anna Salai, Kosapet, Vellore, Tamil Nadu 632001",
   venueAddressTa: "11/8, அண்ணா சாலை, கொசப்பேட்டை, வேலூர், தமிழ்நாடு 632001",
   mapsName: "", // only needed if Google Maps lists the venue under a different name than venueName
@@ -74,6 +75,9 @@ function fillFields() {
     time: EVENT.time,
     timeTa: EVENT.timeTa,
     venueName: EVENT.venueName || FALLBACK.venueName,
+    venueLine: EVENT.venueName
+      ? [EVENT.venueHall, EVENT.venueName, EVENT.venueCity].filter(Boolean).join(", ")
+      : FALLBACK.venueName,
     venueHall: EVENT.venueHall,
     venueHallTa: EVENT.venueHallTa,
     venueAddress: EVENT.venueAddress,

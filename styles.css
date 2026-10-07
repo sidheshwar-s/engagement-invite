@@ -202,16 +202,9 @@ img {
   color: var(--gold-light);
 }
 
-.hero__tagline {
-  margin: 0.9rem 0 1rem;
-  font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 4.5vw, 1.55rem);
-  font-style: italic;
-}
-
 .hero__date {
   display: inline-block;
-  margin: 0;
+  margin: 1.4rem 0 0;
   padding-top: 0.85rem;
   border-top: 1px solid rgba(201, 162, 39, 0.55);
   font-family: var(--font-serif);
@@ -227,6 +220,28 @@ img {
   font-family: var(--font-serif);
   font-size: 1.05rem;
   letter-spacing: 0.1em;
+}
+
+.hero__venue {
+  margin: 0.35rem 0 0;
+}
+
+.hero__venue a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  text-wrap: balance;
+  color: var(--ivory);
+}
+
+.hero__venue svg {
+  flex: none;
+  color: var(--gold-light);
 }
 
 /* Countdown */
@@ -256,8 +271,8 @@ img {
     margin-bottom: 0.8rem;
   }
 
-  .hero__tagline {
-    margin: 0.6rem 0 0.7rem;
+  .hero__date {
+    margin-top: 1rem;
   }
 
   .countdown__heading {
