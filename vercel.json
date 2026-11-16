@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/ta", "destination": "/index.html" },
+    { "source": "/ta/:path*", "destination": "/:path*" }
+  ]
+}

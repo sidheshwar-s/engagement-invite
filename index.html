@@ -24,7 +24,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Noto+Serif+Tamil:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap">
   <link rel="stylesheet" href="styles.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    // Default language comes from the URL: /ta (or ?lang=ta) opens in Tamil.
+    (function () {
+      var root = document.documentElement;
+      var lang = new URLSearchParams(location.search).get("lang");
+      if (lang !== "ta" && lang !== "en") lang = /^\/ta(\/|$)/.test(location.pathname) ? "ta" : "en";
+      root.lang = lang;
+      root.classList.add("js");
+    })();
+  </script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -87,6 +96,11 @@
 
   <div class="scroll-progress" aria-hidden="true"></div>
 
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+    <button type="button" class="ta" lang="ta" data-set-lang="ta" aria-pressed="false">தமிழ்</button>
+  </div>
+
   <header class="hero">
     <div class="hero__frame" aria-hidden="true"></div>
     <img class="hero__mandala" src="assets/mandala.svg" alt="" aria-hidden="true">
@@ -94,51 +108,72 @@
     <canvas class="hero__embers" aria-hidden="true"></canvas>
 
     <div class="hero__content">
-      <p class="eyebrow" style="--i: 0">The Engagement of</p>
-      <p class="eyebrow-ta ta" lang="ta" style="--i: 1">நிச்சயதார்த்த விழா</p>
-      <h1 class="names" style="--i: 2">
-        <span class="names__name shimmer" data-field="groomFirst">Sidheshwar</span>
-        <span class="names__amp">&amp;</span>
-        <span class="names__name shimmer" data-field="brideFirst">Oviya</span>
-      </h1>
-      <p class="hero__names-ta ta" lang="ta" style="--i: 3">
-        <span data-field="groomFirstTa">சித்தேஷ்வர்</span> &amp; <span data-field="brideFirstTa">ஓவியா</span>
+      <p class="eyebrow" style="--i: 0">
+        <span data-lang="en">The Engagement of</span>
+        <span data-lang="ta" class="ta" lang="ta">நிச்சயதார்த்த விழா</span>
       </p>
-      <p class="hero__date" data-field="date" style="--i: 4">Date to be announced</p>
-      <p class="hero__time" data-field="time" style="--i: 5"></p>
-      <p class="hero__venue" style="--i: 6">
+      <h1 class="names" style="--i: 1">
+        <span class="names__name shimmer">
+          <span data-lang="en" data-field="groomFirst">Sidheshwar</span>
+          <span data-lang="ta" class="ta" lang="ta" data-field="groomFirstTa">சித்தேஷ்வர்</span>
+        </span>
+        <span class="names__amp">&amp;</span>
+        <span class="names__name shimmer">
+          <span data-lang="en" data-field="brideFirst">Oviya</span>
+          <span data-lang="ta" class="ta" lang="ta" data-field="brideFirstTa">ஓவியா</span>
+        </span>
+      </h1>
+      <p class="hero__date" style="--i: 3">
+        <span data-lang="en" data-field="date">Date to be announced</span>
+        <span data-lang="ta" class="ta" lang="ta" data-field="dateTa"></span>
+      </p>
+      <p class="hero__time" style="--i: 4">
+        <span data-lang="en" data-field="time"></span>
+        <span data-lang="ta" class="ta" lang="ta" data-field="timeTa"></span>
+      </p>
+      <p class="hero__venue" style="--i: 5">
         <a href="#venue">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/>
             <circle cx="12" cy="9.5" r="2.5"/>
           </svg>
-          <span data-field="venueLine">Venue to be announced</span>
+          <span data-lang="en" data-field="venueLine">Venue to be announced</span>
+          <span data-lang="ta" class="ta" lang="ta" data-field="venueLineTa"></span>
         </a>
       </p>
 
-      <p class="countdown__heading" id="countdown-heading" style="--i: 7">
-        Counting down <span class="ta" lang="ta">· விழாவிற்கு இன்னும்</span>
+      <p class="countdown__heading" id="countdown-heading" style="--i: 6">
+        <span data-lang="en">Counting down</span>
+        <span data-lang="ta" class="ta" lang="ta">விழாவிற்கு இன்னும்</span>
       </p>
-      <div class="countdown" id="countdown" role="timer" aria-label="Countdown to the ceremony" style="--i: 8">
+      <div class="countdown" id="countdown" role="timer" aria-label="Countdown to the ceremony" style="--i: 7">
         <div class="countdown__unit">
           <span class="countdown__value" data-unit="days">--</span>
-          <span class="countdown__label">Days</span>
-          <span class="countdown__label-ta ta" lang="ta">நாட்கள்</span>
+          <span class="countdown__label">
+            <span data-lang="en">Days</span>
+            <span data-lang="ta" class="ta" lang="ta">நாட்கள்</span>
+          </span>
         </div>
         <div class="countdown__unit">
           <span class="countdown__value" data-unit="hours">--</span>
-          <span class="countdown__label">Hours</span>
-          <span class="countdown__label-ta ta" lang="ta">மணி</span>
+          <span class="countdown__label">
+            <span data-lang="en">Hours</span>
+            <span data-lang="ta" class="ta" lang="ta">மணி</span>
+          </span>
         </div>
         <div class="countdown__unit">
           <span class="countdown__value" data-unit="minutes">--</span>
-          <span class="countdown__label">Minutes</span>
-          <span class="countdown__label-ta ta" lang="ta">நிமிடம்</span>
+          <span class="countdown__label">
+            <span data-lang="en">Minutes</span>
+            <span data-lang="ta" class="ta" lang="ta">நிமிடம்</span>
+          </span>
         </div>
         <div class="countdown__unit">
           <span class="countdown__value" data-unit="seconds">--</span>
-          <span class="countdown__label">Seconds</span>
-          <span class="countdown__label-ta ta" lang="ta">வினாடி</span>
+          <span class="countdown__label">
+            <span data-lang="en">Seconds</span>
+            <span data-lang="ta" class="ta" lang="ta">வினாடி</span>
+          </span>
         </div>
       </div>
       <p class="countdown__message" id="countdown-message" hidden></p>
@@ -162,37 +197,56 @@
           </div>
         </figure>
         <div class="divider" aria-hidden="true"><span>&#10022;</span></div>
-        <p class="lead">
+        <p class="lead" data-lang="en">
           With the blessings of our families,<br>
           we joyfully invite you and your family<br>
           to grace the engagement ceremony of
         </p>
-        <p class="lead-ta ta" lang="ta">இரு குடும்பத்தாரின் ஆசியுடன் நடைபெறும்</p>
+        <p class="lead lead--ta ta" data-lang="ta" lang="ta">இரு குடும்பத்தாரின் ஆசியுடன் நடைபெறும்</p>
+        <!-- Tamil puts the parents above each name; English puts them below -->
         <p class="couple">
-          <span class="couple__parents-ta ta" lang="ta" data-field="groomParentsTa"></span>
-          <span class="mask"><span><span data-field="groom">Sidheshwar S</span> <small class="couple__degree" data-field="groomDegree">M.Tech.</small></span></span>
-          <span class="couple__ta ta" lang="ta" data-field="groomTa">ச. சித்தேஷ்வர்</span>
-          <span class="couple__parents" data-field="groomParents"></span>
+          <span class="couple__parents ta" data-lang="ta" lang="ta" data-field="groomParentsTa"></span>
+          <span class="mask"><span>
+            <span data-lang="en" data-field="groom">Sidheshwar S</span>
+            <span class="couple__name-ta ta" data-lang="ta" lang="ta" data-field="groomTa">ச. சித்தேஷ்வர்</span>
+            <small class="couple__degree" data-field="groomDegree">M.Tech.</small>
+          </span></span>
+          <span class="couple__work">
+            <span data-lang="en" data-field="groomWork"></span>
+            <span data-lang="ta" class="ta" lang="ta" data-field="groomWorkTa"></span>
+          </span>
+          <span class="couple__parents" data-lang="en" data-field="groomParents"></span>
           <span class="couple__amp">&amp;</span>
-          <span class="couple__parents-ta ta" lang="ta" data-field="brideParentsTa"></span>
-          <span class="mask" style="--m: 2"><span><span data-field="bride">Oviya B</span> <small class="couple__degree" data-field="brideDegree">M.Tech.</small></span></span>
-          <span class="couple__ta ta" lang="ta" data-field="brideTa">பா. ஓவியா</span>
-          <span class="couple__parents" data-field="brideParents"></span>
+          <span class="couple__parents ta" data-lang="ta" lang="ta" data-field="brideParentsTa"></span>
+          <span class="mask" style="--m: 2"><span>
+            <span data-lang="en" data-field="bride">Oviya B</span>
+            <span class="couple__name-ta ta" data-lang="ta" lang="ta" data-field="brideTa">பா. ஓவியா</span>
+            <small class="couple__degree" data-field="brideDegree">M.Tech.</small>
+          </span></span>
+          <span class="couple__work">
+            <span data-lang="en" data-field="brideWork"></span>
+            <span data-lang="ta" class="ta" lang="ta" data-field="brideWorkTa"></span>
+          </span>
+          <span class="couple__parents" data-lang="en" data-field="brideParents"></span>
         </p>
-        <p class="invite-ta ta" lang="ta">
+        <p class="invite-ta ta" data-lang="ta" lang="ta">
           ஆகியோரின் நிச்சயதார்த்த விழாவிற்குத் தாங்கள் தங்கள் குடும்பத்துடன்
           வருகை தந்து சிறப்பிக்குமாறு அன்புடன் அழைக்கிறோம்.
         </p>
         <div class="invite-when">
-          <p class="invite-date" data-field="date">Date to be announced</p>
-          <p class="invite-time" data-field="time"></p>
-          <p class="invite-when-ta ta" lang="ta">
-            <span data-field="dateTa"></span><br>
-            <span data-field="timeTa"></span>
+          <p class="invite-date">
+            <span data-lang="en" data-field="date">Date to be announced</span>
+            <span data-lang="ta" class="ta" lang="ta" data-field="dateTa"></span>
+          </p>
+          <p class="invite-time">
+            <span data-lang="en" data-field="time"></span>
+            <span data-lang="ta" class="ta" lang="ta" data-field="timeTa"></span>
           </p>
         </div>
-        <p class="muted">Your presence and blessings will make our day complete.</p>
-        <p class="muted ta" lang="ta">தங்கள் வருகையும் ஆசியும் எங்கள் நன்னாளை முழுமையாக்கும்.</p>
+        <p class="muted">
+          <span data-lang="en">Your presence and blessings will make our day complete.</span>
+          <span data-lang="ta" class="ta" lang="ta">தங்கள் வருகையும் ஆசியும் எங்கள் நன்னாளை முழுமையாக்கும்.</span>
+        </p>
         <div class="divider" aria-hidden="true"><span>&#10022;</span></div>
       </div>
     </section>
@@ -200,8 +254,10 @@
     <section id="schedule" class="section section--emerald" aria-labelledby="schedule-title">
       <div class="container">
         <h2 id="schedule-title" class="section-title reveal">
-          <span class="mask"><span>The Celebration</span></span>
-          <span class="mask section-title__ta ta" lang="ta" style="--m: 1"><span>விழா நிகழ்ச்சிகள்</span></span>
+          <span class="mask"><span>
+            <span data-lang="en">The Celebration</span>
+            <span data-lang="ta" class="section-title__ta ta" lang="ta">விழா நிகழ்ச்சிகள்</span>
+          </span></span>
         </h2>
         <ol class="timeline" id="timeline"></ol>
       </div>
@@ -210,17 +266,22 @@
     <section id="venue" class="section section--ivory" aria-labelledby="venue-title">
       <div class="container">
         <h2 id="venue-title" class="section-title reveal">
-          <span class="mask"><span>The Venue</span></span>
-          <span class="mask section-title__ta ta" lang="ta" style="--m: 1"><span>விழா நடைபெறும் இடம்</span></span>
+          <span class="mask"><span>
+            <span data-lang="en">The Venue</span>
+            <span data-lang="ta" class="section-title__ta ta" lang="ta">விழா நடைபெறும் இடம்</span>
+          </span></span>
         </h2>
         <div class="venue reveal-group">
-          <p class="venue__name" data-field="venueName">Venue to be announced</p>
-          <p class="venue__hall">
-            <span data-field="venueHall"></span>
-            <span class="venue__hall-ta ta" lang="ta" data-field="venueHallTa"></span>
+          <p class="venue__name">
+            <span data-lang="en" data-field="venueName">Venue to be announced</span>
+            <span data-lang="ta" class="ta" lang="ta" data-field="venueNameTa"></span>
           </p>
-          <p class="venue__address" data-field="venueAddress" hidden></p>
-          <p class="venue__address ta" lang="ta" data-field="venueAddressTa" hidden></p>
+          <p class="venue__hall">
+            <span data-lang="en" data-field="venueHall"></span>
+            <span data-lang="ta" class="ta" lang="ta" data-field="venueHallTa"></span>
+          </p>
+          <p class="venue__address" data-lang="en" data-field="venueAddress" hidden></p>
+          <p class="venue__address ta" data-lang="ta" lang="ta" data-field="venueAddressTa" hidden></p>
           <div class="venue__map" id="venue-map">
             <div class="venue__placeholder">
               <img src="assets/mandala.svg" alt="" aria-hidden="true">
@@ -233,8 +294,8 @@
                 <path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/>
                 <circle cx="12" cy="9.5" r="2.5"/>
               </svg>
-              Get Directions
-              <span class="button__ta ta" lang="ta">வழி அறிய</span>
+              <span data-lang="en">Get Directions</span>
+              <span data-lang="ta" class="ta" lang="ta">வழி அறிய</span>
             </a>
           </div>
         </div>
@@ -259,11 +320,15 @@
       </svg>
       <span class="kuthu"></span>
     </div>
-    <p class="footer__message">We look forward to celebrating with you</p>
-    <p class="footer__message-ta ta" lang="ta">தங்கள் நல்வரவை விரும்பும்</p>
+    <p class="footer__message">
+      <span data-lang="en">We look forward to celebrating with you</span>
+      <span data-lang="ta" class="ta" lang="ta">தங்கள் நல்வரவை விரும்பும்</span>
+    </p>
     <p class="footer__monogram shimmer" data-field="monogram">S &hearts; O</p>
-    <p class="footer__small">With love &middot; Our Families</p>
-    <p class="footer__small ta" lang="ta">அன்புடன் · இரு குடும்பத்தினர்</p>
+    <p class="footer__small">
+      <span data-lang="en">With love &middot; Our Families</span>
+      <span data-lang="ta" class="ta" lang="ta">அன்புடன் · இரு குடும்பத்தினர்</span>
+    </p>
   </footer>
 
 </body>

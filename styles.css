@@ -74,6 +74,54 @@ img {
   text-transform: none;
 }
 
+/* One language at a time: <html lang> picks which [data-lang] variant shows */
+html:not([lang="ta"]) [data-lang="ta"],
+html[lang="ta"] [data-lang="en"] {
+  display: none !important;
+}
+
+/* Global language switch, pinned to the top right */
+.lang-toggle {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+  display: flex;
+  padding: 3px;
+  border: 1px solid rgba(201, 162, 39, 0.75);
+  border-radius: 999px;
+  background: rgba(6, 46, 35, 0.82);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.5);
+}
+
+.lang-toggle button {
+  padding: 0.3rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: var(--gold-light);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.lang-toggle button.ta {
+  font-family: var(--font-tamil);
+  font-size: 0.75rem;
+}
+
+.lang-toggle button[aria-pressed="true"] {
+  background: var(--gold-gradient);
+  background-size: 200% auto;
+  color: var(--emerald-deep);
+}
+
 /* Gold foil text */
 .shimmer {
   color: var(--gold-light);
@@ -153,11 +201,10 @@ img {
   animation-delay: calc(var(--i, 0) * 130ms + 150ms);
 }
 
-/* Bilingual rule: English first, Tamil directly beneath — gold on the dark
-   sections, emerald on ivory (small gold text is too faint on ivory).
-   The parents' lines are the one exception: Tamil grammar puts them above. */
+/* Bilingual rule: each spot holds an English and a Tamil [data-lang] variant
+   and only the selected language shows. Tamil variants get the .ta font. */
 .eyebrow {
-  margin: 0 0 0.4rem;
+  margin: 0 0 1.4rem;
   font-family: var(--font-serif);
   font-size: 0.85rem;
   font-weight: 500;
@@ -166,10 +213,8 @@ img {
   color: var(--gold-light);
 }
 
-.eyebrow-ta {
-  margin: 0 0 1.4rem;
-  font-size: 0.9rem;
-  color: var(--gold-light);
+.eyebrow .ta {
+  font-size: 1.1em;
 }
 
 .names {
@@ -196,10 +241,17 @@ img {
   color: var(--gold-light);
 }
 
-.hero__names-ta {
-  margin: 0.6rem 0 0;
-  font-size: clamp(1rem, 4vw, 1.2rem);
-  color: var(--gold-light);
+/* Great Vibes has no Tamil, so the Tamil names are set smaller in Noto Serif Tamil */
+.names__name .ta {
+  display: inline-block;
+  padding: 0.1em 0 0.15em;
+  font-size: 0.6em;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.hero__date .ta {
+  font-size: 0.85em;
 }
 
 .hero__date {
@@ -226,10 +278,9 @@ img {
   margin: 0.35rem 0 0;
 }
 
+/* Inline (not flex) so the pin stays beside the first line when the text wraps */
 .hero__venue a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: inline;
   font-family: var(--font-serif);
   font-size: 1.05rem;
   font-style: italic;
@@ -239,8 +290,14 @@ img {
   color: var(--ivory);
 }
 
+.hero__venue .ta {
+  font-size: 0.85em;
+}
+
 .hero__venue svg {
-  flex: none;
+  display: inline-block;
+  margin-right: 0.35rem;
+  vertical-align: -0.15em;
   color: var(--gold-light);
 }
 
@@ -267,7 +324,7 @@ img {
 
 /* Short phones (e.g. iPhone SE): tighten gaps so the diyas stay on screen */
 @media (max-height: 700px) {
-  .eyebrow-ta {
+  .eyebrow {
     margin-bottom: 0.8rem;
   }
 
@@ -318,11 +375,9 @@ img {
   opacity: 0.85;
 }
 
-.countdown__label-ta {
-  font-size: 0.62rem;
+.countdown__label .ta {
+  font-size: 1.05em;
   line-height: 1.5;
-  color: var(--gold-light);
-  opacity: 0.9;
 }
 
 .countdown__message {
@@ -335,7 +390,7 @@ img {
 }
 
 .countdown__message .ta {
-  font-size: 0.85em;
+  font-size: 0.8em;
 }
 
 .scroll-cue {
@@ -601,9 +656,7 @@ main > .section,
 }
 
 .section-title__ta {
-  display: block;
-  margin-top: 0.4rem;
-  font-size: 0.5em;
+  font-size: 0.65em;
   font-weight: 500;
 }
 
@@ -680,19 +733,19 @@ main > .section,
   height: 100%;
   object-fit: cover;
 }
-.lead-ta {
-  margin: 0 0 2rem;
-  font-size: clamp(1rem, 3.8vw, 1.15rem);
-  font-weight: 500;
-  color: var(--emerald);
-}
 
 .lead {
-  margin: 0 0 0.6rem;
+  margin: 0 0 1.75rem;
   font-family: var(--font-serif);
   font-size: clamp(1.2rem, 4.4vw, 1.45rem);
   font-style: italic;
   line-height: 1.6;
+}
+
+.lead--ta {
+  font-size: clamp(1rem, 3.8vw, 1.15rem);
+  font-weight: 500;
+  color: var(--emerald);
 }
 
 .couple {
@@ -707,11 +760,10 @@ main > .section,
   color: var(--emerald);
 }
 
-.couple__ta {
-  margin-top: 0.2rem;
-  font-size: 0.45em;
-  font-weight: 500;
-  color: var(--emerald);
+.couple__name-ta {
+  font-size: 0.7em;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .couple__degree {
@@ -723,15 +775,19 @@ main > .section,
   color: var(--gold-dark);
 }
 
-.couple__parents-ta {
-  margin: 0 0 0.35rem;
-  font-size: 0.85rem;
+.couple__work {
+  margin-top: 0.3rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
   font-weight: 400;
-  line-height: 1.7;
-  white-space: pre-line;
-  text-wrap: balance;
-  color: var(--ink);
-  opacity: 0.85;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: var(--gold-dark);
+}
+
+.couple__work .ta {
+  font-family: var(--font-sans), var(--font-tamil);
+  font-size: 1em;
 }
 
 .couple__parents {
@@ -743,6 +799,16 @@ main > .section,
   letter-spacing: 0;
   text-wrap: balance;
   color: var(--ink);
+}
+
+/* Tamil parents' lines sit above the name */
+.couple__parents.ta {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  font-style: normal;
+  white-space: pre-line;
+  opacity: 0.85;
 }
 
 .couple__amp {
@@ -787,11 +853,12 @@ main > .section,
   letter-spacing: 0.08em;
 }
 
-.invite-when-ta {
-  margin: 0.6rem 0 0;
-  font-size: 0.92rem;
-  line-height: 1.8;
-  color: var(--emerald);
+.invite-date .ta {
+  font-size: 0.95rem;
+}
+
+.invite-time .ta {
+  font-size: 0.95rem;
 }
 
 .muted {
@@ -800,9 +867,8 @@ main > .section,
   opacity: 0.85;
 }
 
-.muted.ta {
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
+.muted .ta {
+  font-size: 0.95em;
   color: var(--emerald);
 }
 
@@ -876,10 +942,8 @@ main > .section,
   line-height: 1.3;
 }
 
-.timeline__title-ta {
-  margin: 0.2rem 0 0;
-  font-size: 0.95rem;
-  color: var(--gold-light);
+.timeline__title .ta {
+  font-size: 0.75em;
 }
 
 .timeline__note {
@@ -909,13 +973,13 @@ main > .section,
   color: var(--gold-dark);
 }
 
-/* "·" separator only when the Tamil hall name is present */
-.venue__hall-ta {
-  display: block;
-  margin-top: 0.15rem;
+.venue__name .ta {
   font-size: 0.8em;
+}
+
+.venue__hall .ta {
+  font-size: 0.85em;
   font-weight: 500;
-  color: var(--emerald);
 }
 
 .venue__address {
@@ -925,8 +989,7 @@ main > .section,
 }
 
 .venue__address.ta {
-  margin-top: 0.4rem;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   line-height: 1.8;
   color: var(--emerald);
 }
@@ -977,10 +1040,9 @@ main > .section,
 
 .button {
   display: inline-flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  column-gap: 0.6rem;
+  gap: 0.6rem;
   padding: 0.95rem 2rem;
   border-radius: 999px;
   background: var(--gold-gradient);
@@ -1005,13 +1067,9 @@ main > .section,
   display: none;
 }
 
-/* Tamil label always sits on its own line under the English */
-.button__ta {
-  flex-basis: 100%;
-  margin-top: 0.15rem;
-  font-size: 0.8rem;
+.button .ta {
+  font-size: 0.95rem;
   font-weight: 500;
-  text-align: center;
 }
 
 /* ============================================================
@@ -1038,9 +1096,12 @@ main > .section,
   font-style: italic;
 }
 
-.footer__message-ta {
-  margin: 0.3rem 0 0.75rem;
-  font-size: 1rem;
+.footer__message {
+  margin-bottom: 0.75rem;
+}
+
+.footer__message .ta {
+  font-size: 0.75em;
   color: var(--gold-light);
 }
 
@@ -1059,12 +1120,8 @@ main > .section,
   opacity: 0.6;
 }
 
-.footer__small.ta {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
-  letter-spacing: 0;
-  color: var(--gold-light);
-  opacity: 0.85;
+.footer__small .ta {
+  font-size: 1.1em;
 }
 
 /* ============================================================

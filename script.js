@@ -10,12 +10,16 @@ const EVENT = {
   brideTa: "பா. ஓவியா",       // initial from father's name, Bala
   groomDegree: "M.Tech.",      // shown small after the name; "" to hide
   brideDegree: "M.Tech.",
+  groomWork: "AMD Pvt. Ltd., Bangalore",       // workplace line under the name; "" to hide
+  groomWorkTa: "AMD Pvt. Ltd., பெங்களூரு",
+  brideWork: "Synopsys Pvt. Ltd., Bangalore",
+  brideWorkTa: "Synopsys Pvt. Ltd., பெங்களூரு",
   // Titles are joined to names with non-breaking spaces so they never split
   // across lines; a "\n" inside a value starts a new line.
-  groomParents: "Son of Er. Saravanan & Mrs. Jothimalar",
-  groomParentsTa: "பொறி. சரவணன் – திருமதி. ஜோதிமலர்\nஅவர்களின் அன்பு மகன்",
-  brideParents: "Daughter of Dr. Balasubramanian & Mrs. Lalithambal, B.Com.",
-  brideParentsTa: "டாக்டர் பாலசுப்ரமணியன் – திருமதி. லலிதாம்பாள், பி.காம்.\nஅவர்களின் அன்பு மகள்",
+  groomParents: "Son of Mr. Saravanan, B.E. & Mrs. Jothimalar",
+  groomParentsTa: "திரு. சரவணன், B.E. – திருமதி. ஜோதிமலர்\nஅவர்களின் அன்பு மகன்",
+  brideParents: "Daughter of Dr. Balasubramanian, B.S.M.S. & Mrs. Lalithambal, B.Com.",
+  brideParentsTa: "Dr. பாலசுப்ரமணியன், B.S.M.S. – திருமதி. லலிதாம்பாள், பி.காம்.\nஅவர்களின் அன்பு மகள்",
 
   date: "Sunday, 13 December 2026",
   dateTa: "13 டிசம்பர் 2026, ஞாயிற்றுக்கிழமை",
@@ -25,9 +29,11 @@ const EVENT = {
   end: "2026-12-13T13:00:00+05:30",
 
   venueName: "Darling Residency",
+  venueNameTa: "டார்லிங் ரெசிடென்சி",
   venueHall: "Mana Priya Hall",     // hall inside the venue; "" to hide
   venueHallTa: "மனப்ரியா அரங்கம்",
   venueCity: "Vellore",             // shown with the venue on the opening screen
+  venueCityTa: "வேலூர்",
   venueAddress: "11/8, Anna Salai, Kosapet, Vellore, Tamil Nadu 632001",
   venueAddressTa: "11/8, அண்ணா சாலை, கொசப்பேட்டை, வேலூர், தமிழ்நாடு 632001",
   mapsName: "", // only needed if Google Maps lists the venue under a different name than venueName
@@ -63,6 +69,10 @@ function fillFields() {
     brideTa: EVENT.brideTa,
     groomDegree: EVENT.groomDegree,
     brideDegree: EVENT.brideDegree,
+    groomWork: EVENT.groomWork,
+    groomWorkTa: EVENT.groomWorkTa,
+    brideWork: EVENT.brideWork,
+    brideWorkTa: EVENT.brideWorkTa,
     groomParents: EVENT.groomParents,
     groomParentsTa: EVENT.groomParentsTa,
     brideParents: EVENT.brideParents,
@@ -75,9 +85,11 @@ function fillFields() {
     time: EVENT.time,
     timeTa: EVENT.timeTa,
     venueName: EVENT.venueName || FALLBACK.venueName,
+    venueNameTa: EVENT.venueNameTa,
     venueLine: EVENT.venueName
       ? [EVENT.venueHall, EVENT.venueName, EVENT.venueCity].filter(Boolean).join(", ")
       : FALLBACK.venueName,
+    venueLineTa: [EVENT.venueHallTa, EVENT.venueNameTa, EVENT.venueCityTa].filter(Boolean).join(", "),
     venueHall: EVENT.venueHall,
     venueHallTa: EVENT.venueHallTa,
     venueAddress: EVENT.venueAddress,
@@ -90,6 +102,31 @@ function fillFields() {
     el.textContent = value;
     el.hidden = value === "";
   });
+}
+
+// A span shown only in one language (see [data-lang] in styles.css).
+function langSpan(lang, text) {
+  const span = document.createElement("span");
+  span.dataset.lang = lang;
+  if (lang === "ta") {
+    span.className = "ta";
+    span.lang = "ta";
+  }
+  span.textContent = text;
+  return span;
+}
+
+function setupLanguageToggle() {
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll("[data-set-lang]");
+
+  function apply(lang) {
+    root.lang = lang;
+    buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setLang === lang)));
+  }
+
+  buttons.forEach((b) => b.addEventListener("click", () => apply(b.dataset.setLang)));
+  apply(root.lang === "ta" ? "ta" : "en"); // default was set from the URL in index.html
 }
 
 function renderSchedule() {
@@ -109,17 +146,9 @@ function renderSchedule() {
 
     const title = document.createElement("h3");
     title.className = "timeline__title";
-    title.textContent = item.title;
+    title.append(langSpan("en", item.title), langSpan("ta", item.titleTa || item.title));
 
     card.append(time, title);
-
-    if (item.titleTa) {
-      const titleTa = document.createElement("p");
-      titleTa.className = "timeline__title-ta ta";
-      titleTa.lang = "ta";
-      titleTa.textContent = item.titleTa;
-      card.append(titleTa);
-    }
 
     if (item.note) {
       const note = document.createElement("p");
@@ -175,11 +204,7 @@ function startCountdown() {
   function showMessage(state) {
     if (message.dataset.state === state) return;
     const [en, ta] = COUNTDOWN_MESSAGES[state];
-    const taLine = document.createElement("span");
-    taLine.className = "ta";
-    taLine.lang = "ta";
-    taLine.textContent = ta;
-    message.replaceChildren(en, document.createElement("br"), taLine);
+    message.replaceChildren(langSpan("en", en), langSpan("ta", ta));
     message.dataset.state = state;
     message.hidden = false;
     box.hidden = true;
@@ -409,6 +434,7 @@ function setupReveal() {
   targets.forEach((el) => observer.observe(el));
 }
 
+setupLanguageToggle();
 fillFields();
 renderSchedule();
 renderVenue();
